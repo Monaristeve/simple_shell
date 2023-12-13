@@ -8,12 +8,12 @@ void freeShellData(data_shell *shellData)
 {
 	unsigned int x;
 
-	for (x = 0; shellData->_environ[x]; x++)
+	for (x = 0; _environ[x]; x++)
 	{
-		free(shellData->_environ[x]);
+		free(_environ[x]);
 	}
 
-	free(shellData->_environ);
+	free(_environ);
 	free(shellData->pid);
 }
 
@@ -32,17 +32,17 @@ void initializeShellData(data_shell *shellData, char **arguments)
 	shellData->status = 0;
 	shellData->counter = 1;
 
-	for (x = 0; environ[x]; x++)
+	for (x = 0; _environ[x]; x++)
 		;
 
-	shellData->_environ = malloc(sizeof(char *) * (x + 1));
+	_environ = malloc(sizeof(char *) * (x + 1));
 
-	for (x = 0; environ[x]; x++)
+	for (x = 0; _environ[x]; x++)
 	{
-		shellData->_environ[x] = _strdup(environ[x]);
+		_environ[x] = _strdup(_environ[x]);
 	}
 
-	shellData->_environ[x] = NULL;
+	_environ[x] = NULL;
 	shellData->pid = intToString(getpid());
 }
 

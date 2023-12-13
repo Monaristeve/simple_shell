@@ -31,20 +31,20 @@ char *duplicate_info(char *name, char *value)
  * @value: The new value of the environment variable.
  * @shell_data: Pointer to the data_shell structure.
  */
-void update_environment(char *name, char *value, data_shell *shell_data)
+void update_environment(char *name, char *value,data_shell *shell_data)
 {
 	int x;
 	char *current_var, *current_name;
 
-	for (x = 0; shell_data->environ[x]; x++)
+	for (x = 0; _environ[x]; x++)
 	{
-		current_var = _strdup(shell_data->environ[x]);
+		current_var = _strdup(_environ[x]);
 		current_name = _strtok(current_var, "=");
 
 		if (_strcmp(current_name, name) == 0)
 		{
-			free(shell_data->environ[x]);
-			shell_data->environ[x] = duplicate_info(current_name, value);
+			free(_environ[x]);
+			_environ[x] = duplicate_info(current_name, value);
 			free(current_var);
 
 			return;
@@ -52,9 +52,9 @@ void update_environment(char *name, char *value, data_shell *shell_data)
 		free(current_var);
 	}
 
-	shell_data->environ = _reallocdp(shell_data->environ, x, sizeof(char *) * (x + 2));
-	shell_data->environ[x] = duplicate_info(name, value);
-	shell_data->environ[x + 1] = NULL;
+	_environ = _reallocdp(_environ, x, sizeof(char *) * (x + 2));
+	_environ[x] = duplicate_info(name, value);
+	_environ[x + 1] = NULL;
 }
 
 /**
@@ -96,9 +96,9 @@ int _unset_environment(data_shell *shell_data)
 
 	position = -1;
 
-	for (x = 0; shell_data->environ[x]; x++)
+	for (x = 0; _environ[x]; x++)
 	{
-		current_var = _strdup(shell_data->environ[x]);
+		current_var = _strdup(_environ[x]);
 		current_name = _strtok(current_var, "=");
 
 		if (_strcmp(current_name, shell_data->args[1]) == 0)
@@ -116,20 +116,20 @@ int _unset_environment(data_shell *shell_data)
 
 	realloc_environ = malloc(sizeof(char *) * (x));
 
-	for (x = y = 0; shell_data->environ[x]; x++)
+	for (x = y = 0; _environ[x]; x++)
 	{
 		if (x != position)
 		{
-			realloc_environ[y] = shell_data->environ[x];
+			realloc_environ[y] = _environ[x];
 			y++;
 		}
 	}
 
 	realloc_environ[y] = NULL;
-	free(shell_data->environ[position]);
-	free(shell_data->environ);
+	free(_environ[position]);
+	free(_environ);
 
-	shell_data->environ = realloc_environ;
+	_environ = realloc_environ;
 	return (1);
 }
 
