@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "my_shell.h"
 
 /**
  * duplicate_string - Duplicates a string

@@ -1,104 +1,100 @@
-#include "shell.h"
+#include "my_shell.h"
 
 /**
- * get_number_length - Calculates the length of an integer
- * @num: The integer
- * Return: Length of the integer
+ * get_len - Computes the number of digits in an integer
+ * @n: The integer for which the length is to be calculated
+ * Return: The number of digits in the integer
  */
-int get_number_length(int num)
+int get_len(int n)
 {
-	unsigned int n;
+	unsigned int n1;
 	int length = 1;
 
-	if (num < 0)
+	if (n < 0)
 	{
 		length++;
-		n = (unsigned int)(num * -1);
+		n1 = n * -1;
 	}
 	else
 	{
-		n = (unsigned int)num;
+		n1 = n;
 	}
-
-	while (n > 9)
+	while (n1 > 9)
 	{
 		length++;
-		n /= 10;
+		n1 = n1 / 10;
 	}
-
 	return (length);
 }
-
 /**
- * itoa_wrapper - Converts an integer to a string
- * @num: The integer to convert
- * Return: The converted string
+ * aux_itoa - Converts an integer to a string
+ * @n: The integer to be converted
+ * Return: A dynamically allocated string representing the integer
  */
-char *itoa_wrapper(int num)
+char *aux_itoa(int n)
 {
-	unsigned int n;
-	int length = get_number_length(num);
-	char *buffer;
+	unsigned int n1;
+	int length = get_len(n);
+	char *buff;
 
-	buffer = malloc(sizeof(char) * (length + 1));
-	if (buffer == NULL)
+	buff = malloc(sizeof(char) * (length + 1));
+	if (buff == 0)
 		return (NULL);
 
-	buffer[length] = '\0';
+	*(buff + length) = '\0';
 
-	if (num < 0)
+	if (n < 0)
 	{
-		n = (unsigned int)(num * -1);
-		buffer[0] = '-';
+		n1 = n * -1;
+		buff[0] = '-';
 	}
 	else
 	{
-		n = (unsigned int)num;
+		n1 = n;
 	}
 
 	length--;
-
 	do {
-		buffer[length] = (n % 10) + '0';
-		n /= 10;
+		*(buff + length) = (n1 % 10) + '0';
+		n1 = n1 / 10;
 		length--;
-	} while (n > 0);
-
-	return (buffer);
+	}
+	while (n1 > 0)
+		;
+	return (buff);
 }
 
 /**
- * atoi_custom - Converts a string to an integer
- * @str: The string to convert
- * Return: The converted integer
+ * _atoi - Converts a string to an integer
+ * @s: The string to be converted
+ * Return: .
  */
-int atoi_custom(char *str)
+int _atoi(char *s)
 {
-	unsigned int count = 0, size = 0, result = 0, sign = 1, multiplier = 1, x;
+	unsigned int count = 0, size = 0, oi = 0, pn = 1, m = 1, i;
 
-	while (str[count] != '\0')
+	while (*(s + count) != '\0')
 	{
-		if (size > 0 && (str[count] < '0' || str[count] > '9'))
+		if (size > 0 && (*(s + count) < '0' || *(s + count) > '9'))
 			break;
 
-		if (str[count] == '-')
-			sign *= -1;
+		if (*(s + count) == '-')
+			pn *= -1;
 
-		if ((str[count] >= '0') && (str[count] <= '9'))
+		if ((*(s + count) >= '0') && (*(s + count) <= '9'))
 		{
 			if (size > 0)
-				multiplier *= 10;
+				m *= 10;
 			size++;
 		}
 		count++;
 	}
 
-	for (x = count - size; x < count; x++)
+	for (i = count - size; i < count; i++)
 	{
-		result = result + ((str[x] - '0') * multiplier);
-		multiplier /= 10;
+		oi = oi + ((*(s + i) - 48) * m);
+		m /= 10;
 	}
-
-	return (result * sign);
+	return (oi * pn);
 }
 
