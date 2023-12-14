@@ -55,12 +55,12 @@ void free_sep_list(sep_list **head)
 }
 
 /**
- * add_line_node_end - Adds a line node at the end of the line list
+ * add_sep_node_end - Adds a line node at the end of the line list
  * @head: Pointer to the head of the line list
  * @line: String representing a line
  * Return: Pointer to the head of the updated line list
  */
-line_list *add_line_node_end(line_list **head, char *line)
+line_list *add_sep_node_end(line_list **head, char *line)
 {
 	line_list *new, *temp;
 
@@ -107,4 +107,5 @@ void free_line_list(line_list **head)
 		*head = NULL;
 	}
 }
+
 

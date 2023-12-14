@@ -95,7 +95,7 @@ int first_char(char *input, int *y)
  * @bool: A flag indicating whether the error is before or after the operator.
  * Return: None.
  */
-void print_syntax_error(data_shell *datash, char *input, int x, int bool)
+void print_syntax_error(data_shell *datash, char *input, int x, int bool __attribute__((unused)))
 {
 	char *msg, *msg2, *msg3, *error, *counter;
 	int length;
