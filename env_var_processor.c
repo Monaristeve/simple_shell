@@ -125,12 +125,12 @@ char *replaced_input(r_var **head, char *input, char *new_input, int nlen)
 }
 
 /**
- * rep_var - Replace variables in the input string.
+ * replace_variable - Replace variables in the input string.
  * @input: Original input string.
  * @datash: Shell data.
  * Return: Modified input string.
  */
-char *rep_var(char *input, data_shell *datash)
+char *replace_variable(char *input, data_shell *datash)
 {
 	r_var *head, *indx;
 	char *status, *new_input;

@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * errorEnv - Generates an error message for environment-related issues.
+ * error_env - Generates an error message for environment-related issues.
  * @datash: Data structure containing shell information.
  * Return: A dynamically allocated string containing the error message.
  */
-char *errorEnv(data_shell *datash)
+char *error_env(data_shell *datash)
 {
 	int length;
 	char *error;
@@ -37,11 +37,11 @@ char *errorEnv(data_shell *datash)
 }
 
 /**
- * errorPath126 - Generates an error message for permission denied (code 126).
+ * error_path_126 - Generates an error message for permission denied (code 126).
  * @datash: Data structure containing shell information.
  * Return: A dynamically allocated string containing the error message.
  */
-char *errorPath126(data_shell *datash)
+char *error_path_126(data_shell *datash)
 {
 	int length;
 	char *ver_str;

@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * change_directory - Changes the current working directory based on input
+ * cd_shell - Changes the current working directory based on input
  * @datash: Pointer to the data structure containing shell information
  * Return: 1 on success, -1 on failure
  */
-int change_directory(data_shell *datash)
+int cd_shell(data_shell *datash)
 {
 	char *dir;
 	int ishome, ishome2, isddash;

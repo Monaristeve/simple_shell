@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * getError - Handles shell errors and prints corresponding messages
+ * get_error - Handles shell errors and prints corresponding messages
  * @datash: Shell data structure
  * @eval: Error code to be handled
  * Return: The same error code received
  */
-int getError(data_shell *datash, int eval)
+int get_error(data_shell *datash, int eval)
 {
 	char *error;
 

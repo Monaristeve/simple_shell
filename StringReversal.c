@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * reverseString - Reverses a string.
+ * rev_string - Reverses a string.
  * @s: The input string to be reversed.
  * Return: void
  */
-void reverseString(char *s)
+void rev_string(char *s)
 {
 int length = 0, x, y;
 char *str, temp;
