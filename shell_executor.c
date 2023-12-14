@@ -1,22 +1,22 @@
-#include "my_shell.h"
+#include "shell.h"
 
 /**
- * executeCommandLine - Executes a line of command in the shell
+ * exec_line - Execute a line of input in the shell.
  *
- * @shellData: Pointer to the shell data structure
- * Return: Return value based on the execution result
+ * @datash: Pointer to the data_shell structure.
+ * Return: Return value.
  */
-int executeCommandLine(data_shell *shellData)
+int exec_line(data_shell *datash)
 {
-	int (*builtinFunction)(data_shell *shellData);
+	int (*builtin)(data_shell *datash);
 
-	if (shellData->arguments[0] == NULL)
+	if (datash->args[0] == NULL)
 		return (1);
 
-	builtinFunction = getBuiltinFunction(shellData->arguments[0]);
+	builtin = get_builtin(datash->args[0]);
 
-	if (builtinFunction != NULL)
-		return (builtinFunction(shellData));
+	if (builtin != NULL)
+		return (builtin(datash));
 
-	return (executeShellCommand(shellData));
+	return (cmd_exec(datash));
 }

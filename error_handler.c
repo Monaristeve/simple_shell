@@ -1,41 +1,41 @@
-#include "my_shell.h"
+#include "shell.h"
 
 /**
- * handle_error - Handles error messages based on error codes.
- * @shell_data: Pointer to the data_shell structure.
- * @error_code: The error code to handle.
- * Return: The error code.
+ * getError - Handles shell errors and prints corresponding messages
+ * @datash: Shell data structure
+ * @eval: Error code to be handled
+ * Return: The same error code received
  */
-int handle_error(data_shell *shell_data, int error_code)
+int getError(data_shell *datash, int eval)
 {
-	char *error_message;
+	char *error;
 
-	switch (error_code)
+	switch (eval)
 	{
-		case -1:
-			error_message = get_env_error(shell_data);
-			break;
-		case 126:
-			error_message = get_path_error_126(shell_data);
-			break;
-		case 127:
-			error_message = get_not_found_error(shell_data);
-			break;
-		case 2:
-			if (_strcmp("exit", shell_data->args[0]) == 0)
-				error_message = get_exit_shell_error(shell_data);
-			else if (_strcmp("cd", shell_data->args[0]) == 0)
-				error_message = get_cd_error(shell_data);
-			break;
+	case -1:
+		error = error_env(datash);
+		break;
+	case 126:
+		error = error_path_126(datash);
+		break;
+	case 127:
+		error = error_not_found(datash);
+		break;
+	case 2:
+		if (_strcmp("exit", datash->args[0]) == 0)
+			error = error_exit_shell(datash);
+		else if (_strcmp("cd", datash->args[0]) == 0)
+			error = error_get_cd(datash);
+		break;
 	}
 
-	if (error_message)
+	if (error)
 	{
-		write(STDERR_FILENO, error_message, _strlen(error_message));
-		free(error_message);
+		write(STDERR_FILENO, error, _strlen(error));
+		free(error);
 	}
 
-	shell_data->status = error_code;
-	return (error_code);
+	datash->status = eval;
+	return (eval);
 }
 

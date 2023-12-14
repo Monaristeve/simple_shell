@@ -1,12 +1,12 @@
-#include "my_shell.h"
+#include "shell.h"
 
 /**
- * swap_characters - Swaps special characters in the input
- * @input: The input string
- * @bool: Boolean flag to swap or restore characters
- * Return: Modified input string
+ * swap_char - Swaps special characters in the input string.
+ * @input: The input string.
+ * @bool: If 0, swap characters '|', '&'; if 1, swap back.
+ * Return: Modified input string.
  */
-char *swap_characters(char *input, int bool)
+char *swap_char(char *input, int bool)
 {
 	int x;
 
@@ -43,18 +43,17 @@ char *swap_characters(char *input, int bool)
 }
 
 /**
- * add_nodes - Adds separator and line nodes based on input
- * @head_s: Head of separator list
- * @head_l: Head of line list
- * @input: Input string
- * Return: void
+ * add_nodes - Adds separator and line nodes based on the input.
+ * @head_s: Head of the separator list.
+ * @head_l: Head of the line list.
+ * @input: The input string.
  */
 void add_nodes(sep_list **head_s, line_list **head_l, char *input)
 {
 	int x;
 	char *line;
 
-	input = swap_characters(input, 0);
+	input = swap_char(input, 0);
 
 	for (x = 0; input[x]; x++)
 	{
@@ -70,19 +69,17 @@ void add_nodes(sep_list **head_s, line_list **head_l, char *input)
 
 	line = _strtok(input, ";|&");
 	do {
-		line = swap_characters(line, 1);
+		line = swap_char(line, 1);
 		add_line_node_end(head_l, line);
 		line = _strtok(NULL, ";|&");
 	} while (line != NULL);
-
 }
 
 /**
- * go_next - Moves to the next separator and line nodes
- * @list_s: Pointer to separator list
- * @list_l: Pointer to line list
- * @datash: Data structure
- * Return: void
+ * go_next - Advances the separator and line lists based on the current status.
+ * @list_s: Pointer to the separator list.
+ * @list_l: Pointer to the line list.
+ * @datash: Data structure containing information about the shell.
  */
 void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 {
@@ -119,10 +116,10 @@ void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 }
 
 /**
- * split_commands - Splits and executes commands based on separators
- * @datash: Data structure
- * @input: Input string
- * Return: 0 if successful, 1 otherwise
+ * split_commands - Splits the input into commands and executes them.
+ * @datash: Data structure containing information about the shell.
+ * @input: The input string.
+ * Return: 0 if successful, 1 otherwise.
  */
 int split_commands(data_shell *datash, char *input)
 {
@@ -163,9 +160,9 @@ int split_commands(data_shell *datash, char *input)
 }
 
 /**
- * split_line - Splits input line into tokens
- * @input: Input line
- * Return: Array of tokens
+ * split_line - Splits the input line into tokens.
+ * @input: The input line.
+ * Return: Array of tokens.
  */
 char **split_line(char *input)
 {

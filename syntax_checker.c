@@ -1,9 +1,9 @@
-#include "my_shell.h"
+#include "shell.h"
 
 /**
- * count_repeated_chars - Counts the number of repeated characters.
+ * count_repeated_chars - Counts the number of repeated characters in a string.
  * @input: The input string.
- * @x: The current position in the input string.
+ * @x: The starting index.
  * Return: The count of repeated characters.
  */
 int count_repeated_chars(char *input, int x)
@@ -15,21 +15,22 @@ int count_repeated_chars(char *input, int x)
 }
 
 /**
- * check_separator_error - Checks for syntax errors related to separators.
+ * error_sep_op - Checks for syntax errors related to separator operators.
  * @input: The input string.
- * @x: The current position in the input string.
- * @last: The last separator encountered.
- * Return: The position of the error, or 0 if no error is found.
+ * @x: The starting index.
+ * @last: The last encountered separator operator.
+ * Return: The index of the syntax error, if any.
  */
-int check_separator_error(char *input, int x, char last)
+int error_sep_op(char *input, int x, char last)
 {
-	int count = 0;
+	int count;
 
+	count = 0;
 	if (*input == '\0')
 		return (0);
 
 	if (*input == ' ' || *input == '\t')
-		return (check_separator_error(input + 1, x + 1, last));
+		return (error_sep_op(input + 1, x + 1, last));
 
 	if (*input == ';')
 		if (last == '|' || last == '&' || last == ';')
@@ -61,23 +62,23 @@ int check_separator_error(char *input, int x, char last)
 		}
 	}
 
-	return (check_separator_error(input + 1, x + 1, *input));
+	return (error_sep_op(input + 1, x + 1, *input));
 }
 
 /**
- * find_first_char - Finds the first non-whitespace character in the input string.
+ * first_char - Finds the index of the first non-space character in a string.
  * @input: The input string.
- * @x: A pointer to the position in the input string.
- * Return: 0 if a valid character is found, -1 otherwise.
+ * @y: The pointer to store the index.
+ * Return: 0 if successful, -1 if a separator operator is found.
  */
-int find_first_char(char *input, int *x)
+int first_char(char *input, int *y)
 {
-	for (*x = 0; input[*x]; *x += 1)
+	for (*y = 0; input[*y]; *y += 1)
 	{
-		if (input[*x] == ' ' || input[*x] == '\t')
+		if (input[*y] == ' ' || input[*y] == '\t')
 			continue;
 
-		if (input[*x] == ';' || input[*x] == '|' || input[*x] == '&')
+		if (input[*y] == ';' || input[*y] == '|' || input[*y] == '&')
 			return (-1);
 
 		break;
@@ -87,13 +88,14 @@ int find_first_char(char *input, int *x)
 }
 
 /**
- * print_syntax_error_msg - Prints syntax error message.
- * @datash: The data shell structure.
+ * print_syntax_error - Prints syntax error messages.
+ * @datash: The shell data structure.
  * @input: The input string.
- * @x: The position of the error.
- * @is_last: Flag indicating whether the error is at the end.
+ * @x: The index of the syntax error.
+ * @bool: A flag indicating whether the error is before or after the operator.
+ * Return: None.
  */
-void print_syntax_error_msg(data_shell *datash, char *input, int x, int is_last)
+void print_syntax_error(data_shell *datash, char *input, int x, int bool)
 {
 	char *msg, *msg2, *msg3, *error, *counter;
 	int length;
@@ -101,8 +103,6 @@ void print_syntax_error_msg(data_shell *datash, char *input, int x, int is_last)
 	if (input[x] == ';')
 	{
 		msg = (input[x + 1] == ';' ? ";;" : ";");
-		if (is_last)
-			msg = (input[x - 1] == ';' ? ";;" : ";");
 	}
 
 	if (input[x] == '|')
@@ -112,7 +112,7 @@ void print_syntax_error_msg(data_shell *datash, char *input, int x, int is_last)
 		msg = (input[x + 1] == '&' ? "&&" : "&");
 
 	msg2 = ": Syntax error: \"";
-	msg3 = "\" unexpected\n";
+	msg3 = "\"unexpected\n";
 	counter = aux_itoa(datash->counter);
 	length = _strlen(datash->av[0]) + _strlen(counter);
 	length += _strlen(msg) + _strlen(msg2) + _strlen(msg3) + 2;
@@ -137,28 +137,28 @@ void print_syntax_error_msg(data_shell *datash, char *input, int x, int is_last)
 }
 
 /**
- * validate_syntax - Validates the syntax of the input string.
- * @datash: The data shell structure.
+ * check_syntax_error - Checks for syntax errors in the input string.
+ * @datash: The shell data structure.
  * @input: The input string.
- * Return: 1 if syntax error found, 0 otherwise.
+ * Return: 1 if syntax error is found, 0 otherwise.
  */
-int validate_syntax(data_shell *datash, char *input)
+int check_syntax_error(data_shell *datash, char *input)
 {
-	int start_pos = 0;
-	int first_char_result = find_first_char(input, &start_pos);
+	int begin = 0;
+	int f_char = 0;
+	int x = 0;
 
-	if (first_char_result == -1)
+	f_char = first_char(input, &begin);
+	if (f_char == -1)
 	{
-		print_syntax_error_msg(datash, input, start_pos, 0);
+		print_syntax_error(datash, input, begin, 0);
 		return (1);
 	}
 
-	int error_pos = check_separator_error(input + start_pos, 0, *(input + start_pos));
-
-	if (error_pos != 0)
-
+	x = error_sep_op(input + begin, 0, *(input + begin));
+	if (x != 0)
 	{
-		print_syntax_error_msg(datash, input, start_pos + error_pos, 1);
+		print_syntax_error(datash, input, begin + x, 1);
 		return (1);
 	}
 

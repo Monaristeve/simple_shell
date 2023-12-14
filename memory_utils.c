@@ -1,88 +1,88 @@
-#include "my_shell.h"
+#include "shell.h"
 
 /**
- * copyMemory - Copies memory from one location to another
- * @destination: Destination pointer
- * @source: Source pointer
- * @size: Number of bytes to copy
+ * _memcpy - Copies 'size' bytes from 'ptr' to 'newptr'.
+ * @newptr: Destination pointer.
+ * @ptr: Source pointer.
+ * @size: Number of bytes to copy.
  *
- * Return: None
+ * Return: None.
  */
-void copyMemory(void *destination, const void *source, unsigned int size)
+void _memcpy(void *newptr, const void *ptr, unsigned int size)
 {
-	char *destPtr = (char *)destination;
-	const char *sourcePtr = (const char *)source;
-	unsigned int i;
+	char *char_ptr = (char *)ptr;
+	char *char_newptr = (char *)newptr;
+	unsigned int x;
 
-	for (i = 0; i < size; i++)
-		destPtr[i] = sourcePtr[i];
+	for (x = 0; x < size; x++)
+		char_newptr[x] = char_ptr[x];
 }
 
 /**
- * customRealloc - Resizes the memory block
- * @ptr: Pointer to the memory block
- * @oldSize: Old size of the memory block
- * @newSize: New size of the memory block
+ * _realloc - Reallocates a memory block.
+ * @ptr: Pointer to the previously allocated memory block.
+ * @old_size: Size of the old memory block.
+ * @new_size: Size of the new memory block.
  *
- * Return: Pointer to the resized memory block
+ * Return: Pointer to the newly allocated memory block.
  */
-void *customRealloc(void *ptr, unsigned int oldSize, unsigned int newSize)
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
-	void *newPtr;
+	void *newptr;
 
 	if (ptr == NULL)
-		return (malloc(newSize));
+		return (malloc(new_size));
 
-	if (newSize == 0)
+	if (new_size == 0)
 	{
 		free(ptr);
 		return (NULL);
 	}
 
-	if (newSize == oldSize)
+	if (new_size == old_size)
 		return (ptr);
 
-	newPtr = malloc(newSize);
-	if (newPtr == NULL)
+	newptr = malloc(new_size);
+	if (newptr == NULL)
 		return (NULL);
 
-	if (newSize < oldSize)
-		copyMemory(newPtr, ptr, newSize);
+	if (new_size < old_size)
+		_memcpy(newptr, ptr, new_size);
 	else
-		copyMemory(newPtr, ptr, oldSize);
+		_memcpy(newptr, ptr, old_size);
 
 	free(ptr);
-	return (newPtr);
+	return (newptr);
 }
 
 /**
- * customReallocDoublePointer - Resizes an array of strings
- * @ptr: Pointer to the array of strings
- * @oldSize: Old size of the array
- * @newSize: New size of the array
+ * _reallocdp - Reallocates a double pointer array.
+ * @ptr: Pointer to the old array.
+ * @old_size: Size of the old array.
+ * @new_size: Size of the new array.
  *
- * Return: Pointer to the resized array of strings
+ * Return: Pointer to the newly allocated array.
  */
-char **customReallocDoublePointer(char **ptr, unsigned int oldSize, unsigned int newSize)
+char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size)
 {
-	char **newPtr;
-	unsigned int i;
+	char **newptr;
+	unsigned int y;
 
 	if (ptr == NULL)
-		return (malloc(sizeof(char *) * newSize));
+		return (malloc(sizeof(char *) * new_size));
 
-	if (newSize == oldSize)
+	if (new_size == old_size)
 		return (ptr);
 
-	newPtr = malloc(sizeof(char *) * newSize);
-	if (newPtr == NULL)
+	newptr = malloc(sizeof(char *) * new_size);
+	if (newptr == NULL)
 		return (NULL);
 
-	for (i = 0; i < oldSize; i++)
-		newPtr[i] = ptr[i];
+	for (y = 0; y < old_size; y++)
+		newptr[y] = ptr[y];
 
 	free(ptr);
 
-	return (newPtr);
+	return (newptr);
 }
 
